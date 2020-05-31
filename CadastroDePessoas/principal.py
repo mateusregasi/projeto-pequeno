@@ -4,9 +4,9 @@ from func import *
 while True:
     temPastaBackup()
     try:
-        lista = open('listaNomes.txt', 'r')
+        lista = open('./CadastroDePessoas/listaNomes.txt', 'r')
     except FileNotFoundError:
-        lista = open('listaNomes.txt', 'x')
+        lista = open('./CadastroDePessoas/listaNomes.txt', 'x')
     finally:
         lista.close()
     op = menu()

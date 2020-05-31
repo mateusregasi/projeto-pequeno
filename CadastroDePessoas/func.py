@@ -32,7 +32,7 @@ def menu():
     return op
 def numeroDeLinhas():
     cont = 0
-    lista = open('listaNomes.txt', 'r')
+    lista = open('./CadastroDePessoas/listaNomes.txt', 'r')
     for linha in lista:
         cont += 1
     lista.close()
@@ -61,26 +61,27 @@ def registrarPessoa():
         else:
             break
     pessoa = '{:>3} {:<40} {:>7} sexo {}\n'.format(pessoa['codigo'], pessoa['nome'], pessoa['idade'], pessoa['sexo'])
-    lista = open('listaNomes.txt', 'a')
+    lista = open('./CadastroDePessoas/listaNomes.txt', 'a')
     lista.write(pessoa)
     lista.close()
 def mostrarLista():
     if numeroDeLinhas() == 0:
-        print('A lista não possue nenhum conteúdo!')
+        print('A lista não possui nenhum conteúdo!')
     else:
         titulo('Lista de Nomes')
-        lista = open('listaNomes.txt', 'r')
+        lista = open('./CadastroDePessoas/listaNomes.txt', 'r')
         for linha in lista:
             print(linha, end='')
         lista.close()
 def procurarPessoa():
+    mostrarLinha()
     while True:
         nome = input('Digite um nome: ').strip().title()
         if nome.isnumeric() == True:
             print('O nome digitado é inválido!')
         else:
             break
-    lista = open('listaNomes.txt', 'r')
+    lista = open('./CadastroDePessoas/listaNomes.txt', 'r')
     for linha in lista:
         if nome in linha[4:41]:
             print(linha)
@@ -93,19 +94,19 @@ def excluirLista():
             certeza = ''
         else:
             if certeza == 'S':
-                lista = open('listaNomes.txt', 'w')
+                lista = open('./CadastroDePessoas/listaNomes.txt', 'w')
                 lista.write('')
                 lista.close()
             break
 def formatarLista():
     cont = 0
-    lista = open('listaNomes.txt', 'r')
+    lista = open('./CadastroDePessoas/listaNomes.txt', 'r')
     listaBackup = lista.readlines()
     quant = len(listaBackup)
     for c in range(0, quant):
         listaBackup[c].replace(listaBackup[c][0:3], f'{c:>3}')
     lista.close()
-    lista = open('listaNomes.txt', 'w')
+    lista = open('./CadastroDePessoas/listaNomes.txt', 'w')
     for c2 in listaBackup:
         lista.writelines(c2)
     lista.close()
@@ -117,7 +118,7 @@ def excluirPessoa():
             print('Código inváido! Digite novamente!')
         else:
             break
-    lista = open('listaNomes.txt', 'r')
+    lista = open('./CadastroDePessoas/listaNomes.txt', 'r')
     listaBackup = lista.readlines()
     listaExcluir = []
     for linha in listaBackup:
@@ -131,7 +132,7 @@ def excluirPessoa():
     if listaExcluir == []:
         print('O código não existe!')
     else:
-        lista = open('listaNomes.txt', 'w')
+        lista = open('./CadastroDePessoas/listaNomes.txt', 'w')
         for p in listaBackup:
             lista.writelines(p)
         lista.close()
@@ -145,10 +146,10 @@ def fazerBackup():
             print('Nome inválido! Digite novamente!')
     if nome != 'sair':
         try:
-            teste = open(f'Backup\{nome}.txt', 'r')
+            teste = open(f'./CadastroDePessoas/Backup\{nome}.txt', 'r')
         except:
             quer = 'S'
-            backup = open(f'Backup\{nome}.txt', 'x')
+            backup = open(f'./CadastroDePessoas/Backup\{nome}.txt', 'x')
             backup.close()
         else:
             while True:
@@ -161,15 +162,15 @@ def fazerBackup():
         finally:
             if quer == 'S':
                 listaParaBackup = ''
-                lista = open('listaNomes.txt', 'r')
+                lista = open('./CadastroDePessoas/listaNomes.txt', 'r')
                 listaParaBackup = lista.read()
                 lista.close()
-                backup = open(f'Backup\{nome}.txt', 'w')
+                backup = open(f'./CadastroDePessoas/Backup/{nome}.txt', 'w')
                 backup.write(listaParaBackup)
                 backup.close()
 def mostrarBackups():
     titulo('Backups')
-    listaBackup = listdir('C:\\Users\mateu\PycharmProjects\ProjetinhoBrabo\Backup')
+    listaBackup = listdir('./CadastroDePessoas/Backup')
     if listaBackup == []:
         print('Não existe nenhum backup disponível!')
         return False
@@ -181,27 +182,27 @@ def carregarBackup():
     tembackup = mostrarBackups()
     if tembackup == True:
         backupApagar = f'{input("Digite o backup que deseja carregar: ").strip()}.txt'
-        listaBackup = listdir('C:\\Users\mateu\PycharmProjects\ProjetinhoBrabo\Backup')
+        listaBackup = listdir('./CadastroDePessoas/Backup')
         if backupApagar not in listaBackup:
             print('O backup solicitado não existe!')
         else:
-            listaApagar = open(f'Backup\{backupApagar}', 'r')
+            listaApagar = open(f'./CadastroDePessoas/Backup/{backupApagar}', 'r')
             paraLista = listaApagar.readlines()
             listaApagar.close()
-            lista = open('listaNomes.txt', 'w')
+            lista = open('./CadastroDePessoas/listaNomes.txt', 'w')
             lista.writelines(paraLista)
             lista.close()
-            remove(f'C:\\Users\mateu\PycharmProjects\ProjetinhoBrabo\Backup\{backupApagar}')
+            remove(f'./CadastroDePessoas/Backup/{backupApagar}')
 def apagarBackup():
     tembackup = mostrarBackups()
     if tembackup == True:
         backupApagar = f'{input("Digite o backup que deseja apagar: ").strip()}.txt'
-        listaBackup = listdir('C:\\Users\mateu\PycharmProjects\ProjetinhoBrabo\Backup')
+        listaBackup = listdir('./CadastroDePessoas/Backup')
         if backupApagar not in listaBackup:
             print('O backup solicitado não existe!')
         else:
-            remove(f'C:\\Users\mateu\PycharmProjects\ProjetinhoBrabo\Backup\{backupApagar}')
+            remove(f'./CadastroDePessoas/Backup/{backupApagar}')
 def temPastaBackup():
-    listaDePastas = listdir('C:\\Users\mateu\PycharmProjects\ProjetinhoBrabo')
+    listaDePastas = listdir('./CadastroDePessoas')
     if 'Backup' not in listaDePastas:
-        mkdir('C:\\Users\mateu\PycharmProjects\ProjetinhoBrabo\Backup')
+        mkdir('./CadastroDePessoas/Backup')
